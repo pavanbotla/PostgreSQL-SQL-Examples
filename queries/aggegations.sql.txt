@@ -1,0 +1,76 @@
+-- Drop tables if they already exist
+DROP TABLE IF EXISTS df, df1, cust, prod;
+
+-- Create main dataset table
+CREATE TABLE df (
+    id SERIAL PRIMARY KEY,
+    tdate DATE,
+    amount NUMERIC(10,2),
+    category VARCHAR(50),
+    product VARCHAR(50),
+    spendby VARCHAR(10)
+);
+
+-- Insert data into df
+INSERT INTO df (id, tdate, amount, category, product, spendby) VALUES
+(0, '2011-06-26', 300.4, 'Exercise', 'GymnasticsPro', 'cash'),
+(1, '2011-05-26', 200.0, 'Exercise Band', 'Weightlifting', 'credit'),
+(2, '2011-06-01', 300.4, 'Exercise', 'Gymnastics Pro', 'cash'),
+(3, '2011-06-05', 100.0, 'Gymnastics', 'Rings', 'credit'),
+(4, '2011-12-17', 300.0, 'Team Sports', 'Field', 'cash'),
+(5, '2011-02-14', 200.0, 'Gymnastics', NULL, 'cash'),
+(6, '2011-06-05', 100.0, 'Exercise', 'Rings', 'credit'),
+(7, '2011-12-17', 300.0, 'Team Sports', 'Field', 'cash'),
+(8, '2011-02-14', 200.0, 'Gymnastics', NULL, 'cash');
+
+-- Create df1 table
+CREATE TABLE df1 (
+    id SERIAL PRIMARY KEY,
+    tdate DATE,
+    amount NUMERIC(10,2),
+    category VARCHAR(50),
+    product VARCHAR(50),
+    spendby VARCHAR(10)
+);
+
+-- Insert data into df1
+INSERT INTO df1 (id, tdate, amount, category, product, spendby) VALUES
+(4, '2011-12-17', 300.0, 'Team Sports', 'Field', 'cash'),
+(5, '2011-02-14', 200.0, 'Gymnastics', NULL, 'cash'),
+(6, '2011-02-14', 200.0, 'Winter', NULL, 'cash'),
+(7, '2011-02-14', 200.0, 'Winter', NULL, 'cash');
+
+-- Create customer table
+CREATE TABLE cust (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+-- Insert customer data
+INSERT INTO cust (id, name) VALUES
+(1, 'raj'),
+(2, 'ravi'),
+(3, 'sai'),
+(5, 'rani');
+
+-- Create product table
+CREATE TABLE prod (
+    id SERIAL PRIMARY KEY,
+    product VARCHAR(50)
+);
+
+-- Insert product data
+INSERT INTO prod (id, product) VALUES
+(1, 'mouse'),
+(3, 'mobile'),
+(7, 'laptop');
+
+
+-- Aggregations
+SELECT category, SUM(amount) AS total FROM df GROUP BY category;
+SELECT category, spendby, SUM(amount) AS total FROM df GROUP BY category, spendby;
+SELECT category, spendby, SUM(amount) AS total, COUNT(amount) AS cnt FROM df GROUP BY category, spendby;
+
+-- Maximum amount per category
+SELECT category, MAX(amount) AS max FROM df GROUP BY category ORDER BY category;
+SELECT category, MAX(amount) AS max FROM df GROUP BY category ORDER BY category DESC;
